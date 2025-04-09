@@ -27,6 +27,8 @@ public class HttpSourceOptions extends HttpCommonOptions {
     public static final boolean DEFAULT_ENABLE_MULTI_LINES = false;
     public static final int DEFAULT_CONNECT_TIMEOUT_MS = 6000 * 2;
     public static final int DEFAULT_SOCKET_TIMEOUT_MS = 6000 * 10;
+    public static final String PAGE_NUMBER_PAGINATION_TYPE = "PageNumberPagination";
+    public static final String CURSOR_PAGINATION_TYPE = "CursorPagination";
 
     public static final Option<Boolean> KEEP_PARAMS_AS_FORM =
             Options.key("keep_params_as_form")
@@ -65,6 +67,28 @@ public class HttpSourceOptions extends HttpCommonOptions {
 
     public static final Option<Map<String, String>> PAGEING =
             Options.key("pageing").mapType().noDefaultValue().withDescription("pageing");
+
+    public static final Option<String> PAGE_TYPE =
+            Options.key("page_type")
+                    .stringType()
+                    .defaultValue(PAGE_NUMBER_PAGINATION_TYPE)
+                    .withDescription(
+                            "this parameter is used to specify the page type ,or PageNumberPagination if not set"
+                                    + "for example PageNumberPagination、CursorPagination");
+
+    public static final Option<String> PAGE_CURSOR_FIELD_NAME =
+            Options.key("page_cursor_name")
+                    .stringType()
+                    .noDefaultValue()
+                    .withDescription(
+                            "this parameter is used to specify the CursorPagination field name in the request parameter");
+
+    public static final Option<String> PAGE_CURSOR_RESPONSE_FIELD =
+            Options.key("page_cursor_response_field")
+                    .stringType()
+                    .noDefaultValue()
+                    .withDescription(
+                            "This parameter specifies the field in the response from which the cursor is retrieved");
 
     public static final Option<HttpRequestMethod> METHOD =
             Options.key("method")

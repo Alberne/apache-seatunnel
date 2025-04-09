@@ -32,11 +32,12 @@ public class SeaTunnelEngineLocalExample {
     static {
         // https://logging.apache.org/log4j/2.x/manual/simple-logger.html#isThreadContextMapInheritable
         System.setProperty("log4j2.isThreadContextMapInheritable", "true");
+        System.setProperty("SEATUNNEL_HOME", "D:\\tmp\\seatunnel\\plugin");
     }
 
     public static void main(String[] args)
             throws FileNotFoundException, URISyntaxException, CommandException {
-        String configurePath = args.length > 0 ? args[0] : "/examples/fake_to_console.conf";
+        String configurePath = args.length > 0 ? args[0] : "/examples/http_base_cursor_page.conf";
         String configFile = getTestConfigFile(configurePath);
         ClientCommandArgs clientCommandArgs = new ClientCommandArgs();
         clientCommandArgs.setConfigFile(configFile);
