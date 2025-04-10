@@ -263,12 +263,13 @@ public class HttpSourceReader extends AbstractSingleSplitReader<SeaTunnelRow> {
     }
 
     private void collect(Collector<SeaTunnelRow> output, String data) throws IOException {
+        String contentData = data;
         if (contentJson != null) {
-            data = JsonUtils.stringToJsonNode(getPartOfJson(data)).toString();
+            contentData = JsonUtils.stringToJsonNode(getPartOfJson(data)).toString();
         }
         if (jsonField != null && contentJson == null) {
             this.initJsonPath(jsonField);
-            data = JsonUtils.toJsonNode(parseToMap(decodeJSON(data), jsonField)).toString();
+            contentData = JsonUtils.toJsonNode(parseToMap(decodeJSON(data), jsonField)).toString();
         }
         // page
         if (pageInfoOptional.isPresent()) {
@@ -295,14 +296,14 @@ public class HttpSourceReader extends AbstractSingleSplitReader<SeaTunnelRow> {
                     noMoreElementFlag = pageInfo.getPageIndex() >= pageInfo.getTotalPageSize();
                 } else {
                     // no 'total page' configured
-                    int readSize = JsonUtils.stringToJsonNode(data).size();
+                    int readSize = JsonUtils.stringToJsonNode(contentData).size();
                     // if read size < BatchSize : read finish
                     // if read size = BatchSize : read next page.
                     noMoreElementFlag = readSize < pageInfo.getBatchSize();
                 }
             }
         }
-        deserializationCollector.collect(data.getBytes(), output);
+        deserializationCollector.collect(contentData.getBytes(), output);
     }
 
     private List<Map<String, String>> parseToMap(List<List<String>> datas, JsonField jsonField) {
