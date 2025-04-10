@@ -77,14 +77,14 @@ public class HttpSourceOptions extends HttpCommonOptions {
                                     + "for example PageNumberPagination、CursorPagination");
 
     public static final Option<String> PAGE_CURSOR_FIELD_NAME =
-            Options.key("page_cursor_name")
+            Options.key("cursor_field")
                     .stringType()
                     .noDefaultValue()
                     .withDescription(
                             "this parameter is used to specify the CursorPagination field name in the request parameter");
 
     public static final Option<String> PAGE_CURSOR_RESPONSE_FIELD =
-            Options.key("page_cursor_response_field")
+            Options.key("cursor_response_field")
                     .stringType()
                     .noDefaultValue()
                     .withDescription(
