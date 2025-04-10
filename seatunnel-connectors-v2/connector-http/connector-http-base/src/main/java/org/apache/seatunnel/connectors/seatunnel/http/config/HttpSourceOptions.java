@@ -27,8 +27,6 @@ public class HttpSourceOptions extends HttpCommonOptions {
     public static final boolean DEFAULT_ENABLE_MULTI_LINES = false;
     public static final int DEFAULT_CONNECT_TIMEOUT_MS = 6000 * 2;
     public static final int DEFAULT_SOCKET_TIMEOUT_MS = 6000 * 10;
-    public static final String PAGE_NUMBER_PAGINATION_TYPE = "PageNumberPagination";
-    public static final String CURSOR_PAGINATION_TYPE = "CursorPagination";
 
     public static final Option<Boolean> KEEP_PARAMS_AS_FORM =
             Options.key("keep_params_as_form")
@@ -71,10 +69,11 @@ public class HttpSourceOptions extends HttpCommonOptions {
     public static final Option<String> PAGE_TYPE =
             Options.key("page_type")
                     .stringType()
-                    .defaultValue(PAGE_NUMBER_PAGINATION_TYPE)
+                    .defaultValue(HttpPaginationType.PAGE_NUMBER_PAGINATION.getCode())
                     .withDescription(
-                            "this parameter is used to specify the page type ,or PageNumberPagination if not set"
-                                    + "for example PageNumberPagination、CursorPagination");
+                            "this parameter specifies the pagination type and defaults to `PageNumberPagination` if not explicitly set. "
+                                    + "Valid options include `PageNumberPagination` (traditional page-number-based pagination) "
+                                    + "and `CursorPagination` (token-based cursor pagination).");
 
     public static final Option<String> PAGE_CURSOR_FIELD_NAME =
             Options.key("cursor_field")

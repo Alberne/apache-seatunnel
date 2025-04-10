@@ -28,6 +28,7 @@ import org.apache.seatunnel.connectors.seatunnel.common.source.AbstractSingleSpl
 import org.apache.seatunnel.connectors.seatunnel.common.source.SingleSplitReaderContext;
 import org.apache.seatunnel.connectors.seatunnel.http.client.HttpClientProvider;
 import org.apache.seatunnel.connectors.seatunnel.http.client.HttpResponse;
+import org.apache.seatunnel.connectors.seatunnel.http.config.HttpPaginationType;
 import org.apache.seatunnel.connectors.seatunnel.http.config.HttpParameter;
 import org.apache.seatunnel.connectors.seatunnel.http.config.JsonField;
 import org.apache.seatunnel.connectors.seatunnel.http.config.PageInfo;
@@ -52,8 +53,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
-
-import static org.apache.seatunnel.connectors.seatunnel.http.config.HttpSourceOptions.CURSOR_PAGINATION_TYPE;
 
 @Slf4j
 @Setter
@@ -226,7 +225,7 @@ public class HttpSourceReader extends AbstractSingleSplitReader<SeaTunnelRow> {
                 noMoreElementFlag = false;
                 PageInfo info = pageInfoOptional.get();
                 // cursor pagination
-                if (CURSOR_PAGINATION_TYPE.equals(info.getPageType())) {
+                if (HttpPaginationType.CURSOR_PAGINATION.getCode().equals(info.getPageType())) {
                     while (!noMoreElementFlag) {
                         updateRequestParam(info);
                         pollAndCollectData(output);
@@ -276,7 +275,7 @@ public class HttpSourceReader extends AbstractSingleSplitReader<SeaTunnelRow> {
             PageInfo pageInfo = pageInfoOptional.get();
 
             // cursor pagination
-            if (CURSOR_PAGINATION_TYPE.equals(pageInfo.getPageType())) {
+            if (HttpPaginationType.CURSOR_PAGINATION.getCode().equals(pageInfo.getPageType())) {
                 // get cursor value from response JSON with fileName
                 String cursorResponseField = pageInfo.getPageCursorResponseField();
                 ReadContext context = JsonPath.using(jsonConfiguration).parse(data);
