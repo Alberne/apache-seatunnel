@@ -66,10 +66,10 @@ public class HttpSourceOptions extends HttpCommonOptions {
     public static final Option<Map<String, String>> PAGEING =
             Options.key("pageing").mapType().noDefaultValue().withDescription("pageing");
 
-    public static final Option<String> PAGE_TYPE =
+    public static final Option<HttpPaginationType> PAGE_TYPE =
             Options.key("page_type")
-                    .stringType()
-                    .defaultValue(HttpPaginationType.PAGE_NUMBER_PAGINATION.getCode())
+                    .enumType(HttpPaginationType.class)
+                    .defaultValue(HttpPaginationType.PAGE_NUMBER_PAGINATION)
                     .withDescription(
                             "this parameter specifies the pagination type and defaults to `PageNumberPagination` if not explicitly set. "
                                     + "Valid options include `PageNumberPagination` (traditional page-number-based pagination) "
