@@ -151,8 +151,6 @@ public class HttpSourceReader extends AbstractSingleSplitReader<SeaTunnelRow> {
 
     private void updateRequestParam(PageInfo pageInfo) {
         // 1. keep page param as http param
-
-        // keep page param as http param
         if (this.httpParameter.isKeepPageParamAsHttpParam()) {
             if (this.httpParameter.getParams() == null) {
                 httpParameter.setParams(new HashMap<>());
@@ -225,7 +223,7 @@ public class HttpSourceReader extends AbstractSingleSplitReader<SeaTunnelRow> {
                 noMoreElementFlag = false;
                 PageInfo info = pageInfoOptional.get();
                 // cursor pagination
-                if (HttpPaginationType.CURSOR_PAGINATION.getCode().equals(info.getPageType())) {
+                if (HttpPaginationType.CURSOR.getCode().equals(info.getPageType())) {
                     while (!noMoreElementFlag) {
                         updateRequestParam(info);
                         pollAndCollectData(output);
@@ -275,7 +273,7 @@ public class HttpSourceReader extends AbstractSingleSplitReader<SeaTunnelRow> {
             PageInfo pageInfo = pageInfoOptional.get();
 
             // cursor pagination
-            if (HttpPaginationType.CURSOR_PAGINATION.getCode().equals(pageInfo.getPageType())) {
+            if (HttpPaginationType.CURSOR.getCode().equals(pageInfo.getPageType())) {
                 // get cursor value from response JSON with fileName
                 String cursorResponseField = pageInfo.getPageCursorResponseField();
                 ReadContext context = JsonPath.using(jsonConfiguration).parse(data);

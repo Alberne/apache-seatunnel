@@ -18,11 +18,11 @@ package org.apache.seatunnel.connectors.seatunnel.http.config;
 
 public enum HttpPaginationType {
     /** Page number based pagination */
-    PAGE_NUMBER_PAGINATION(
+    PAGE_NUMBER(
             "PageNumberPagination",
             "traditional page-number-based pagination,uses a page number and page size to retrieve a specific slice of data"),
     /** Cursor based pagination */
-    CURSOR_PAGINATION(
+    CURSOR(
             "CursorPagination",
             "token-based cursor pagination,uses a cursor/token to fetch the next set of data based on a specific point or marker");
 
