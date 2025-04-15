@@ -71,16 +71,16 @@ public class HttpSourceOptions extends HttpCommonOptions {
                     .enumType(HttpPaginationType.class)
                     .defaultValue(HttpPaginationType.PAGE_NUMBER)
                     .withDescription(
-                            "this parameter specifies the pagination type and defaults to `PageNumberPagination` if not explicitly set. "
-                                    + "Valid options include `PageNumberPagination` (traditional page-number-based pagination) "
-                                    + "and `CursorPagination` (token-based cursor pagination).");
+                            "this parameter specifies the pagination type and defaults to `PageNumber` if not explicitly set. "
+                                    + "Valid options include `PageNumber` (traditional page-number-based pagination) "
+                                    + "and `Cursor` (token-based cursor pagination).");
 
     public static final Option<String> PAGE_CURSOR_FIELD_NAME =
             Options.key("cursor_field")
                     .stringType()
                     .noDefaultValue()
                     .withDescription(
-                            "this parameter is used to specify the CursorPagination field name in the request parameter");
+                            "this parameter is used to specify the Cursor field name in the request parameter");
 
     public static final Option<String> PAGE_CURSOR_RESPONSE_FIELD =
             Options.key("cursor_response_field")

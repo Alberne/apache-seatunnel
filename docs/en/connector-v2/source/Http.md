@@ -44,36 +44,36 @@ They can be downloaded via install-plugin.sh or from the Maven central repositor
 
 ## Source Options
 
-| Name                          |  Type   | Required | Default              | Description                                                                                                                                                                       |
-|-------------------------------|---------|----------|----------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| url                           | String  | Yes      | -                    | Http request url.                                                                                                                                                                 |
-| schema                        | Config  | No       | -                    | Http and seatunnel data structure mapping                                                                                                                                         |
-| schema.fields                 | Config  | No       | -                    | The schema fields of upstream data                                                                                                                                                |
-| json_field                    | Config  | No       | -                    | This parameter helps you configure the schema,so this parameter must be used with schema.                                                                                         |
-| pageing                       | Config  | No       | -                    | This parameter is used for paging queries                                                                                                                                         |
-| pageing.page_field            | String  | No       | -                    | This parameter is used to specify the page field name in the request parameter                                                                                                    |
-| pageing.total_page_size       | Int     | No       | -                    | This parameter is used to control the total number of pages                                                                                                                       |
-| pageing.batch_size            | Int     | No       | -                    | The batch size returned per request is used to determine whether to continue when the total number of pages is unknown                                                            |
-| pageing.start_page_number     | Int     | No       | 1                    | Specify the page number from which synchronization starts                                                                                                                         |
-| pageing.page_type             | String  | No       | PageNumberPagination | this parameter is used to specify the page type ,or PageNumberPagination if not set, only support `PageNumberPagination` and `CursorPagination`.                                  |
-| pageing.cursor_field          | String  | No       | -                    | this parameter is used to specify the CursorPagination field name in the request parameter.                                                                                       |
-| pageing.cursor_response_field | String  | No       | -                    | This parameter specifies the field in the response from which the cursor is retrieved.                                                                                            |
-| content_json                  | String  | No       | -                    | This parameter can get some json data.If you only need the data in the 'book' section, configure `content_field = "$.store.book.*"`.                                              |
-| format                        | String  | No       | text                 | The format of upstream data, now only support `json` `text`, default `text`.                                                                                                      |
-| method                        | String  | No       | get                  | Http request method, only supports GET, POST method.                                                                                                                              |
-| headers                       | Map     | No       | -                    | Http headers.                                                                                                                                                                     |
-| params                        | Map     | No       | -                    | Http params.                                                                                                                                                                      |
-| body                          | String  | No       | -                    | Http body,the program will automatically add http header application/json,body is jsonbody.                                                                                       |
-| poll_interval_millis          | Int     | No       | -                    | Request http api interval(millis) in stream mode.                                                                                                                                 |
-| retry                         | Int     | No       | -                    | The max retry times if request http return to `IOException`.                                                                                                                      |
-| retry_backoff_multiplier_ms   | Int     | No       | 100                  | The retry-backoff times(millis) multiplier if request http failed.                                                                                                                |
-| retry_backoff_max_ms          | Int     | No       | 10000                | The maximum retry-backoff times(millis) if request http failed                                                                                                                    |
-| enable_multi_lines            | Boolean | No       | false                |                                                                                                                                                                                   |
-| connect_timeout_ms            | Int     | No       | 12000                | Connection timeout setting, default 12s.                                                                                                                                          |
-| socket_timeout_ms             | Int     | No       | 60000                | Socket timeout setting, default 60s.                                                                                                                                              |
-| common-options                |         | No       | -                    | Source plugin common parameters, please refer to [Source Common Options](../source-common-options.md) for details                                                                 |
-| keep_params_as_form           |    Boolean  | No       | false                | Whether the params are submitted according to the form, used for compatibility with legacy behaviors. When true, the value of the params parameter is submitted through the form. |
-| keep_page_param_as_http_param |    Boolean  | No       | false                | Whether to set the paging parameters to params. For compatibility with legacy behaviors.                                                                                          |
+| Name                          |  Type   | Required | Default     | Description                                                                                                                                                                       |
+|-------------------------------|---------|----------|-------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| url                           | String  | Yes      | -           | Http request url.                                                                                                                                                                 |
+| schema                        | Config  | No       | -           | Http and seatunnel data structure mapping                                                                                                                                         |
+| schema.fields                 | Config  | No       | -           | The schema fields of upstream data                                                                                                                                                |
+| json_field                    | Config  | No       | -           | This parameter helps you configure the schema,so this parameter must be used with schema.                                                                                         |
+| pageing                       | Config  | No       | -           | This parameter is used for paging queries                                                                                                                                         |
+| pageing.page_field            | String  | No       | -           | This parameter is used to specify the page field name in the request parameter                                                                                                    |
+| pageing.total_page_size       | Int     | No       | -           | This parameter is used to control the total number of pages                                                                                                                       |
+| pageing.batch_size            | Int     | No       | -           | The batch size returned per request is used to determine whether to continue when the total number of pages is unknown                                                            |
+| pageing.start_page_number     | Int     | No       | 1           | Specify the page number from which synchronization starts                                                                                                                         |
+| pageing.page_type             | String  | No       | PageNumber  | this parameter is used to specify the page type ,or PageNumber if not set, only support `PageNumber` and `Cursor`.                                  |
+| pageing.cursor_field          | String  | No       | -           | this parameter is used to specify the Cursor field name in the request parameter.                                                                                       |
+| pageing.cursor_response_field | String  | No       | -           | This parameter specifies the field in the response from which the cursor is retrieved.                                                                                            |
+| content_json                  | String  | No       | -           | This parameter can get some json data.If you only need the data in the 'book' section, configure `content_field = "$.store.book.*"`.                                              |
+| format                        | String  | No       | text        | The format of upstream data, now only support `json` `text`, default `text`.                                                                                                      |
+| method                        | String  | No       | get         | Http request method, only supports GET, POST method.                                                                                                                              |
+| headers                       | Map     | No       | -           | Http headers.                                                                                                                                                                     |
+| params                        | Map     | No       | -           | Http params.                                                                                                                                                                      |
+| body                          | String  | No       | -           | Http body,the program will automatically add http header application/json,body is jsonbody.                                                                                       |
+| poll_interval_millis          | Int     | No       | -           | Request http api interval(millis) in stream mode.                                                                                                                                 |
+| retry                         | Int     | No       | -           | The max retry times if request http return to `IOException`.                                                                                                                      |
+| retry_backoff_multiplier_ms   | Int     | No       | 100         | The retry-backoff times(millis) multiplier if request http failed.                                                                                                                |
+| retry_backoff_max_ms          | Int     | No       | 10000       | The maximum retry-backoff times(millis) if request http failed                                                                                                                    |
+| enable_multi_lines            | Boolean | No       | false       |                                                                                                                                                                                   |
+| connect_timeout_ms            | Int     | No       | 12000       | Connection timeout setting, default 12s.                                                                                                                                          |
+| socket_timeout_ms             | Int     | No       | 60000       | Socket timeout setting, default 60s.                                                                                                                                              |
+| common-options                |         | No       | -           | Source plugin common parameters, please refer to [Source Common Options](../source-common-options.md) for details                                                                 |
+| keep_params_as_form           |    Boolean  | No       | false       | Whether the params are submitted according to the form, used for compatibility with legacy behaviors. When true, the value of the params parameter is submitted through the form. |
+| keep_page_param_as_http_param |    Boolean  | No       | false       | Whether to set the paging parameters to params. For compatibility with legacy behaviors.                                                                                          |
 
 
 ## How to Create a Http Data Synchronization Jobs
@@ -366,11 +366,11 @@ source {
 - See this link for task configuration [http_jsonpath_to_assert.conf](../../../../seatunnel-e2e/seatunnel-connector-v2-e2e/connector-http-e2e/src/test/resources/http_jsonpath_to_assert.conf).
 
 ### pageing
-The current supported pagination type are `PageNumberPagination` and `CursorPagination`. 
-if you need to use pagination, you need to configure `pageing`. the default pagination type is `PageNumberPagination`.
+The current supported pagination type are `PageNumber` and `Cursor`. 
+if you need to use pagination, you need to configure `pageing`. the default pagination type is `PageNumber`.
 
 
-#### 1. PageNumberPagination
+#### 1. PageNumber
 When you need to concatenate page param in the URL,then add params.
 When you need to set page param to the body,add the key of page param in body.
 
@@ -387,8 +387,8 @@ source {
        page: "${page}"
       }
       pageing={
-       #you can not set this parameter ,the default value is PageNumberPagination
-       page_type="PageNumberPagination"
+       #you can not set this parameter ,the default value is PageNumber
+       page_type="PageNumber"
        total_page_size=20
        page_field=page
        #when don't know the total_page_size use batch_size if read size<batch_size finish ,otherwise continue
@@ -406,8 +406,8 @@ source {
 
 ``` 
 
-#### 2. CursorPagination
-the `pageing.page_type` parameter must be set to `CursorPagination`.
+#### 2. Cursor
+the `pageing.page_type` parameter must be set to `Cursor`.
 `cursor_field` is the field name of the cursor in the request parameters.
 `cursor_response_field` is the field name denotes the name of the pagination token field in the response data, we should add this to add pageing fields into request.
 ````hocon
@@ -421,7 +421,7 @@ source {
       content_field = "$.data.*"
       keep_page_param_as_http_param = true
       pageing ={
-        page_type="CursorPagination"
+        page_type="Cursor"
         cursor_field ="cursor"
         cursor_response_field="$.paging.cursors.next"
       }
