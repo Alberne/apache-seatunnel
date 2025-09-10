@@ -34,38 +34,40 @@ import ChangeLog from '../changelog/connector-http.md';
 
 ## 源选项
 
-| 名称                          | 类型    | 是否必须 | 默认值      | 描述                                                                                                                                                                       |
-|-------------------------------|---------|----------|-------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| url                           | String  | 是       | -           | Http 请求 URL。                                                                                                                                                                 |
-| schema                        | Config  | 否       | -           | Http 和 seatunnel 数据结构映射                                                                                                                                                         |
-| schema.fields                 | Config  | 否       | -           | 上游数据的 schema 字段                                                                                                                                                                |
-| json_field                    | Config  | 否       | -           | 此参数帮助您配置 schema，因此此参数必须与 schema 一起使用。                                                                                         |
-| pageing                       | Config  | 否       | -           | 此参数用于分页查询                                                                                                                                                         |
-| pageing.page_field            | String  | 否       | -           | 此参数用于指定请求中的页面字段名称。它可以在 headers、params 或 body 中使用占位符，如 ${page_field}。                             |
-| pageing.use_placeholder_replacement | Boolean | 否 | false | 如果为 true，则使用占位符替换（${field}）用于 headers、parameters 和 body 值，否则使用基于键的替换。                                                  |
-| pageing.total_page_size       | Int     | 否       | -           | 此参数用于控制总页数                                                                                                                       |
-| pageing.batch_size            | Int     | 否       | -           | 每个请求返回的批量大小，用于在总页数未知时确定是否继续                                                            |
-| pageing.start_page_number     | Int     | 否       | 1           | 指定同步开始的页码                                                                                                                         |
-| pageing.page_type             | String  | 否       | PageNumber  | 此参数用于指定页面类型，如果未设置则为 PageNumber，仅支持 `PageNumber` 和 `Cursor`。                                  |
-| pageing.cursor_field          | String  | 否       | -           | 此参数用于指定请求参数中的游标字段名称。                                                                                       |
-| pageing.cursor_response_field | String  | 否       | -           | 此参数指定从中检索游标的响应字段。                                                                                            |
-| content_json                  | String  | 否       | -           | 此参数可以获取一些 json 数据。如果您只需要 'book' 部分的数据，配置 `content_field = "$.store.book.*"`。                                              |
-| format                        | String  | 否       | text        | 上游数据的格式，目前仅支持 `json` `text`，默认为 `text`。                                                                                                      |
-| method                        | String  | 否       | get         | Http 请求方法，仅支持 GET、POST 方法。                                                                                                                              |
-| headers                       | Map     | 否       | -           | Http 头信息。                                                                                                                                                                     |
-| params                        | Map     | 否       | -           | Http 参数。                                                                                                                                                                      |
-| body                          | String  | 否       | -           | Http 请求体，程序将自动添加 http header application/json，body 是 jsonbody。                                                                                       |
-| poll_interval_millis          | Int     | 否       | -           | 流模式下请求 http api 的间隔（毫秒）。                                                                                                                                 |
-| retry                         | Int     | 否       | -           | 如果请求 http 返回 `IOException` 的最大重试次数。                                                                                                                      |
-| retry_backoff_multiplier_ms   | Int     | 否       | 100         | 请求 http 失败时的重试退避时间（毫秒）乘数。                                                                                                                |
-| retry_backoff_max_ms          | Int     | 否       | 10000       | 请求 http 失败时的最大重试退避时间（毫秒）                                                                                                                    |
-| enable_multi_lines            | Boolean | 否       | false       |                                                                                                                                                                                   |
-| connect_timeout_ms            | Int     | 否       | 12000       | 连接超时设置，默认 12 秒。                                                                                                                                          |
-| socket_timeout_ms             | Int     | 否       | 60000       | Socket 超时设置，默认 60 秒。                                                                                                                                              |
-| common-options                |         | 否       | -           | 源插件通用参数，请参考 [Source Common Options](../source-common-options.md) 获取详细信息                                                                 |
-| keep_params_as_form           | Boolean | 否       | false       | 是否按照表单提交参数，用于兼容旧行为。当为 true 时，params 参数的值通过表单提交。 |
-| keep_page_param_as_http_param | Boolean | 否       | false       | 是否将分页参数设置为 params。用于兼容旧行为。                                                                                          |
-| json_filed_missed_return_null | Boolean | 否      | false        | 当 JSON 字段缺失时，设置为 true 并返回 null，否则返回错误。|
+| 名称                                  | 类型    | 是否必须 | 默认值        | 描述                                                                           |
+|-------------------------------------|---------|----------|------------|------------------------------------------------------------------------------|
+| url                                 | String  | 是       | -          | Http 请求 URL。                                                                 |
+| schema                              | Config  | 否       | -          | Http 和 seatunnel 数据结构映射                                                      |
+| schema.fields                       | Config  | 否       | -          | 上游数据的 schema 字段                                                              |
+| json_field                          | Config  | 否       | -          | 此参数帮助您配置 schema，因此此参数必须与 schema 一起使用。                                        |
+| pageing                             | Config  | 否       | -          | 此参数用于分页查询                                                                    |
+| pageing.page_field                  | String  | 否       | -          | 此参数用于指定请求中的页面字段名称。它可以在 headers、params 或 body 中使用占位符，如 ${page_field}。         |
+| pageing.use_placeholder_replacement | Boolean | 否 | false      | 如果为 true，则使用占位符替换（${field}）用于 headers、parameters 和 body 值，否则使用基于键的替换。        |
+| pageing.total_page_size             | Int     | 否       | -          | 此参数用于控制总页数                                                                   |
+| pageing.batch_size                  | Int     | 否       | -          | 每个请求返回的批量大小，用于在总页数未知时确定是否继续                                                  |
+| pageing.start_page_number           | Int     | 否       | 1          | 指定同步开始的页码                                                                    |
+| pageing.page_type                   | String  | 否       | PageNumber | 此参数用于指定页面类型，如果未设置则为 PageNumber，仅支持 `PageNumber` 和 `Cursor`。                  |
+| pageing.cursor_field                | String  | 否       | -          | 此参数用于指定请求参数中的游标字段名称。                                                         |
+| pageing.cursor_response_field       | String  | 否       | -          | 此参数指定从中检索游标的响应字段。                                                            |
+| content_json                        | String  | 否       | -          | 此参数可以获取一些 json 数据。如果您只需要 'book' 部分的数据，配置 `content_field = "$.store.book.*"`。 |
+| format                              | String  | 否       | text       | 上游数据的格式，目前仅支持 `json` `text`，默认为 `text`。                                      |
+| method                              | String  | 否       | get        | Http 请求方法，仅支持 GET、POST 方法。                                                   |
+| headers                             | Map     | 否       | -          | Http 头信息。                                                                    |
+| params                              | Map     | 否       | -          | Http 参数。                                                                     |
+| body                                | String  | 否       | -          | Http 请求体，程序将自动添加 http header application/json，body 是 jsonbody。               |
+| poll_interval_millis                | Int     | 否       | -          | 流模式下请求 http api 的间隔（毫秒）。                                                     |
+| retry                               | Int     | 否       | -          | 如果请求 http 返回 `IOException` 的最大重试次数。                                          |
+| retry_backoff_multiplier_ms         | Int     | 否       | 100        | 请求 http 失败时的重试退避时间（毫秒）乘数。                                                    |
+| retry_backoff_max_ms                | Int     | 否       | 10000      | 请求 http 失败时的最大重试退避时间（毫秒）                                                     |
+| enable_multi_lines                  | Boolean | 否       | false      |                                                                              |
+| connect_timeout_ms                  | Int     | 否       | 12000      | 连接超时设置，默认 12 秒。                                                              |
+| socket_timeout_ms                   | Int     | 否       | 60000      | Socket 超时设置，默认 60 秒。                                                         |
+| common-options                      |         | 否       | -          | 源插件通用参数，请参考 [Source Common Options](../source-common-options.md) 获取详细信息      |
+| keep_params_as_form                 | Boolean | 否       | false      | 是否按照表单提交参数，用于兼容旧行为。当为 true 时，params 参数的值通过表单提交。                              |
+| keep_page_param_as_http_param       | Boolean | 否       | false      | 是否将分页参数设置为 params。用于兼容旧行为。                                                   |
+| json_filed_missed_return_null       | Boolean | 否      | false      | 当 JSON 字段缺失时，设置为 true 并返回 null，否则返回错误。                                       |
+| custom_signature_code               | String  | 否       | -          | 通过动态代码的方式实现用户自定的http签名算法。                                                    |
+
 
 ## 如何创建 Http 数据同步作业
 

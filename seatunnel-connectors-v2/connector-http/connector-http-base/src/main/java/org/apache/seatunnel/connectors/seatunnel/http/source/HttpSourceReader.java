@@ -36,6 +36,7 @@ import org.apache.seatunnel.connectors.seatunnel.http.config.JsonField;
 import org.apache.seatunnel.connectors.seatunnel.http.config.PageInfo;
 import org.apache.seatunnel.connectors.seatunnel.http.exception.HttpConnectorErrorCode;
 import org.apache.seatunnel.connectors.seatunnel.http.exception.HttpConnectorException;
+import org.apache.seatunnel.connectors.seatunnel.http.util.AuthorizationUtil;
 import org.apache.seatunnel.connectors.seatunnel.http.util.JsonPathProcessorFactory;
 import org.apache.seatunnel.connectors.seatunnel.http.util.JsonPathUtils;
 
@@ -58,11 +59,14 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
+import static org.apache.seatunnel.connectors.seatunnel.http.source.HttpSource.httpSignatureClass;
+import static org.apache.seatunnel.connectors.seatunnel.http.source.HttpSource.needHttpSignature;
+
 @Slf4j
 @Setter
 public class HttpSourceReader extends AbstractSingleSplitReader<SeaTunnelRow> {
     protected final SingleSplitReaderContext context;
-    protected final HttpParameter httpParameter;
+    protected HttpParameter httpParameter;
     protected HttpClientProvider httpClient;
     private final DeserializationCollector deserializationCollector;
     private static final Option[] DEFAULT_OPTIONS = {
@@ -124,6 +128,14 @@ public class HttpSourceReader extends AbstractSingleSplitReader<SeaTunnelRow> {
     }
 
     public void pollAndCollectData(Collector<SeaTunnelRow> output) throws Exception {
+
+        // before request should process http signature
+        if (needHttpSignature) {
+            this.httpParameter =
+                    AuthorizationUtil.getSignatureHttpParameter(
+                            httpSignatureClass, this.httpParameter);
+        }
+
         HttpResponse response =
                 httpClient.execute(
                         this.httpParameter.getUrl(),

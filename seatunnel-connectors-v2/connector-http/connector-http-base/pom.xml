@@ -94,5 +94,12 @@
             <version>${mockito.version}</version>
             <scope>test</scope>
         </dependency>
+
+        <dependency>
+            <groupId>org.apache.seatunnel</groupId>
+            <artifactId>seatunnel-janino</artifactId>
+            <version>${project.version}</version>
+            <classifier>optional</classifier>
+        </dependency>
     </dependencies>
 </project>

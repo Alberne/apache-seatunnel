@@ -17,7 +17,12 @@
 
 package org.apache.seatunnel.connectors.seatunnel.http.util;
 
+import org.apache.seatunnel.shade.org.codehaus.commons.compiler.CompileException;
+import org.apache.seatunnel.shade.org.codehaus.janino.ClassBodyEvaluator;
+
+import org.apache.seatunnel.common.utils.ReflectionUtils;
 import org.apache.seatunnel.connectors.seatunnel.http.config.HttpConfig;
+import org.apache.seatunnel.connectors.seatunnel.http.config.HttpParameter;
 
 import static org.apache.commons.codec.binary.Base64.encodeBase64URLSafeString;
 
@@ -29,5 +34,30 @@ public class AuthorizationUtil {
         String accessToken =
                 HttpConfig.BASIC + " " + encodeBase64URLSafeString(accountMessage.getBytes());
         return accessToken;
+    }
+
+    public static Object getHttpSignatureClass(String SourceCode) {
+        try {
+            ClassBodyEvaluator cbe = new ClassBodyEvaluator();
+
+            cbe.cook(SourceCode);
+
+            return cbe.getClazz().newInstance();
+
+        } catch (CompileException | InstantiationException | IllegalAccessException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static HttpParameter getSignatureHttpParameter(
+            Object signatureClass, HttpParameter httpParameter) {
+        Object result;
+        try {
+            result = ReflectionUtils.invoke(signatureClass, "HttpSignature", httpParameter);
+        } catch (Exception e) {
+            throw new IllegalArgumentException(
+                    "CompileCode error, please check signature algorithms code: " + e.getMessage());
+        }
+        return (HttpParameter) result;
     }
 }

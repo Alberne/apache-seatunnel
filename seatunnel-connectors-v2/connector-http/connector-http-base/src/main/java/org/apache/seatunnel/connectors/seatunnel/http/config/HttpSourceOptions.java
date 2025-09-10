@@ -153,4 +153,11 @@ public class HttpSourceOptions extends HttpCommonOptions {
                     .booleanType()
                     .defaultValue(false)
                     .withDescription("When the json field is missing, return null");
+
+    public static final Option<String> CUSTOM_SIGNATURE_CODE =
+            Options.key("custom_signature_code")
+                    .stringType()
+                    .noDefaultValue()
+                    .withDescription(
+                            "This parameter is the Java code for the user-implemented custom signature algorithm of the http request.");
 }

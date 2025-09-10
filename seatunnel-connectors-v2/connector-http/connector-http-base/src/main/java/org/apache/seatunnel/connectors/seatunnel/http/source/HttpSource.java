@@ -46,6 +46,7 @@ import org.apache.seatunnel.connectors.seatunnel.http.config.HttpSourceOptions;
 import org.apache.seatunnel.connectors.seatunnel.http.config.JsonField;
 import org.apache.seatunnel.connectors.seatunnel.http.config.PageInfo;
 import org.apache.seatunnel.connectors.seatunnel.http.exception.HttpConnectorException;
+import org.apache.seatunnel.connectors.seatunnel.http.util.AuthorizationUtil;
 import org.apache.seatunnel.format.json.JsonDeserializationSchema;
 
 import java.util.Collections;
@@ -60,6 +61,8 @@ public class HttpSource extends AbstractSingleSplitSource<SeaTunnelRow> {
     protected DeserializationSchema<SeaTunnelRow> deserializationSchema;
 
     protected CatalogTable catalogTable;
+    protected static Object httpSignatureClass = null;
+    protected static Boolean needHttpSignature = false;
 
     public HttpSource(ReadonlyConfig pluginConfig) {
         this.httpParameter.buildWithConfig(pluginConfig);
@@ -124,6 +127,13 @@ public class HttpSource extends AbstractSingleSplitSource<SeaTunnelRow> {
                 pageInfo.setUsePlaceholderReplacement(
                         HttpSourceOptions.USE_PLACEHOLDER_REPLACEMENT.defaultValue());
             }
+        }
+
+        if (pluginConfig.hasPath(HttpSourceOptions.CUSTOM_SIGNATURE_CODE.key())) {
+            httpSignatureClass =
+                    AuthorizationUtil.getHttpSignatureClass(
+                            pluginConfig.getString(HttpSourceOptions.CUSTOM_SIGNATURE_CODE.key()));
+            needHttpSignature = true;
         }
     }
 
