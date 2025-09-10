@@ -358,6 +358,63 @@ source {
 - 测试数据可以在此链接找到 [mockserver-config.json](seatunnel-e2e/seatunnel-connector-v2-e2e/connector-http-e2e/src/test/resources/mockserver-config.json)
 - 任务配置请参考此链接 [http_jsonpath_to_assert.conf](seatunnel-e2e/seatunnel-connector-v2-e2e/connector-http-e2e/src/test/resources/http_jsonpath_to_assert.conf)。
 
+### custom_signature_code
+提供了可编程的方式实现api接口签名逻辑，目前只支持java代码实现
+
+:::tip
+
+重要提醒：
+请确保你代码逻辑操作的安全性
+:::
+
+在代码逻辑中必须实现以下方法:
+- `public HttpParameter HttpSignature(HttpParameter httpParameter)`
+
+httpParameter 参数已经包括了请求接口所需的所有参数，请不要随意修改参数内容，确保原样返回，只需处理签名逻辑即可，返回处理后的httpParameter.
+
+如果代码逻辑中依赖的三方jar, 请将依赖的jar包放在${SEATUNNEL_HOME}/lib下，如果你使用的是spark、flink引擎，请将依赖的jar包放在对应服务器的lib下，然后重启服务。
+#### Example 1: api need dynamic token
+
+```hocon
+env {
+  parallelism = 1
+  job.mode = "BATCH"
+}
+
+source {
+  Http {
+    plugin_output = "http"
+    url = "http://mockserver:1080/query/custom_sign"
+    method = "GET"
+    format = "json"
+    json_field = {
+          name = "$.data[*].name"
+          age = "$.data[*].age"
+        }
+
+   custom_signature_code = """
+        import org.apache.seatunnel.connectors.seatunnel.http.config.HttpParameter;
+        import java.util.Map;
+        import java.util.HashMap;
+
+   		public HttpParameter HttpSignature( HttpParameter httpParameter) {
+            Map<String, String> params = new HashMap();
+            //signature logic 
+            String signature = "custom_sign_token";
+            params.put("token", signature)
+            httpParameter.setParams(params);
+            return httpParameter;
+            }
+   """
+   }
+}
+
+sink {}
+
+
+```
+
+
 ### pageing
 当前支持的分页类型是 `PageNumber` 和 `Cursor`。
 如果您需要使用分页，您需要配置 `pageing`。默认分页类型是 `PageNumber`。

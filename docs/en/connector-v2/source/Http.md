@@ -368,6 +368,64 @@ source {
 - Test data can be found at this link [mockserver-config.json](seatunnel-e2e/seatunnel-connector-v2-e2e/connector-http-e2e/src/test/resources/mockserver-config.json)
 - See this link for task configuration [http_jsonpath_to_assert.conf](seatunnel-e2e/seatunnel-connector-v2-e2e/connector-http-e2e/src/test/resources/http_jsonpath_to_assert.conf).
 
+### custom_signature_code
+It provides a programmable way to handle custom signatures in http requests, currently supporting only Java-based implementation.
+
+:::tip
+
+important clause
+You need to ensure the security of your service and prevent attackers from uploading destructive code
+
+:::
+
+In the source code, you must implement one public method:
+- `public HttpParameter HttpSignature(HttpParameter httpParameter)`
+
+The httpParameter already contains all the parameters required for the HTTP request. Please refrain from modifying the parameter content arbitrarily. Only add the signature content according to the signature logic required by the HTTP API interface, and return the rest as-is.
+
+If there are third-party dependency packages, please place them in ${SEATUNNEL_HOME}/lib, if you use spark or flink, you need to put it under the libs of the corresponding service. You need restart the server to load the lib file.
+
+#### Example 1: api need dynamic token
+
+```hocon
+env {
+  parallelism = 1
+  job.mode = "BATCH"
+}
+
+source {
+  Http {
+    plugin_output = "http"
+    url = "http://mockserver:1080/query/custom_sign"
+    method = "GET"
+    format = "json"
+    json_field = {
+          name = "$.data[*].name"
+          age = "$.data[*].age"
+        }
+
+   custom_signature_code = """
+        import org.apache.seatunnel.connectors.seatunnel.http.config.HttpParameter;
+        import java.util.Map;
+        import java.util.HashMap;
+
+   		public HttpParameter HttpSignature( HttpParameter httpParameter) {
+            Map<String, String> params = new HashMap();
+            //signature logic 
+            String signature = "custom_sign_token";
+            params.put("token", signature)
+            httpParameter.setParams(params);
+            return httpParameter;
+            }
+   """
+   }
+}
+
+sink {}
+
+
+```
+
 ### pageing
 The current supported pagination type are `PageNumber` and `Cursor`.
 if you need to use pagination, you need to configure `pageing`. the default pagination type is `PageNumber`.

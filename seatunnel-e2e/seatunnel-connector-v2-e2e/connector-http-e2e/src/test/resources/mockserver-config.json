@@ -4828,5 +4828,30 @@
         ]
       }
     }
+  },
+  {
+    "httpRequest": {
+      "method": "GET",
+      "path": "/query/custom_sign",
+      "queryStringParameters": {
+        "token": "custom_sign_token"
+      }
+    },
+    "httpResponse": {
+      "body": {
+        "status": null,
+        "msg": null,
+        "data": [
+          {
+            "name": "name3",
+            "age": 45
+          },
+          {
+            "name": "name4",
+            "age": 32
+          }
+        ]
+      }
+    }
   }
 ]

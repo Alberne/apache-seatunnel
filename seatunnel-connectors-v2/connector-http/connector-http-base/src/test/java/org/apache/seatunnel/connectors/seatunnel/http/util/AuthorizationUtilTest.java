@@ -18,11 +18,10 @@ package org.apache.seatunnel.connectors.seatunnel.http.util;
 
 import org.apache.seatunnel.connectors.seatunnel.http.config.HttpParameter;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThrows;
 
 public class AuthorizationUtilTest {
@@ -38,7 +37,7 @@ public class AuthorizationUtilTest {
         Object signatureClass = AuthorizationUtil.getHttpSignatureClass(sourceCode);
 
         // Then
-        assertNotNull(signatureClass);
+        Assertions.assertNotNull(signatureClass);
     }
 
     @Test
@@ -61,24 +60,27 @@ public class AuthorizationUtilTest {
         // Given
         String sourceCode =
                 "import org.apache.seatunnel.connectors.seatunnel.http.config.HttpParameter;"
-                        + "    public HttpParameter HttpSignature(\n"
-                        + "            HttpParameter httpParameter) {\n"
-                        + "            httpParameter.setUrl(\"new_url\");"
-                        + "        return httpParameter;\n"
-                        + "    }\n"
+                        + " import java.util.Map;"
+                        + " import java.util.HashMap;"
+                        + "    public HttpParameter HttpSignature( HttpParameter httpParameter) {"
+                        + "        Map<String, String> params = new HashMap();"
+                        + "        String signature = \"custom_sign_token\";"
+                        + "        params.put(\"token\", signature);"
+                        + "        httpParameter.setParams(params);"
+                        + "        return httpParameter;"
+                        + "    }"
                         + " ";
 
         Object signatureClass = AuthorizationUtil.getHttpSignatureClass(sourceCode);
         HttpParameter httpParameter = new HttpParameter();
-        httpParameter.setUrl("old_url");
 
         // When
         HttpParameter result =
                 AuthorizationUtil.getSignatureHttpParameter(signatureClass, httpParameter);
 
         // Then
-        assertNotNull(result);
-        assertEquals("new_url", result.getUrl());
+        Assertions.assertNotNull(result);
+        Assertions.assertEquals("custom_sign_token", result.getParams().get("token"));
     }
 
     @Test

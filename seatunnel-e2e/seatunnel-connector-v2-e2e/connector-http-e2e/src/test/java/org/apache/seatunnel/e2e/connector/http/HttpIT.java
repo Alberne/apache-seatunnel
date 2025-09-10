@@ -360,7 +360,10 @@ public class HttpIT extends TestSuiteBase implements TestResource {
 
         Container.ExecResult execResult21 =
                 container.executeJob("/http_page_cursor_num_assert.conf");
-        Assertions.assertEquals(0, execResult21.getExitCode());
+
+        Container.ExecResult execResult22 =
+                container.executeJob("/http_json_signature_assert.conf");
+        Assertions.assertEquals(0, execResult22.getExitCode());
     }
 
     @TestTemplate
